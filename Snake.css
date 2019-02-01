@@ -1,0 +1,84 @@
+html {
+	background-color: Mintcream;
+}
+
+h1 {
+	padding: 0px 0px 15px 0px;
+	text-align: center;
+	margin: auto;
+	font-size: 50px;
+	font-style: comic;
+}
+
+.game {
+	width: 1110px;
+	height: 840px;
+	margin: auto;
+	float: center;
+	border: 5px solid black;
+	border-radius: 25px;
+	background-color: LightGreen;
+}
+
+.menu {
+	font-size: 20px;
+	display: inline-block;
+	margin: 20px 10px 20px 20px;
+	width: 100;
+	height: 800px;
+}
+
+span {
+	display: inline-block;
+	float: right;
+}
+
+#length {
+	text-align: right;
+	color: red;
+}
+
+#score {
+	text-align: right;
+	color: red;
+}
+
+button {
+	margin-top: 5px;
+	width: 100%;
+	height: 50px;
+	background-color: LightGreen;
+	border: solid black 1px;
+	font-size: 20px;
+	font-family: sans-serif;
+	color: black;
+	cursor: pointer;	
+}
+
+#canvas {
+	background-color: green;
+	display: inline-block;
+	margin: 20px 20px 20px 10px;
+	width: 800px;
+	height: 800px;
+	border: 2px solid black;
+	float: right;
+}
+
+#block {
+	width: 10px;
+	height: 10px;
+	border: 1px solid black;
+	background-color: red;
+}
+.ui-widget-content {
+	margin: 0x;
+}
+
+a:hover {
+	color: pink;
+}
+
+footer {
+ text-align: center;
+}
