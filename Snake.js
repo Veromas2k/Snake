@@ -1,106 +1,118 @@
 $(document).ready(function(){
-
 	var canvas = document.getElementById("canvas");
 	var ctx= canvas.getContext("2d");
 	canvas.width = 800;
 	canvas.height = 800;
 	var fieldPx = 20;
-	var posX = Math.floor((Math.random() * 39) + 0);
-	var posY = Math.floor((Math.random() * 39) + 0);
-	var posFX = Math.floor((Math.random() * 39) + 0);
-	var posFY = Math.floor((Math.random() * 39) + 0);
-	var headX = fieldPx * posX;
-	var headY = fieldPx * posY;
-	var foodX = fieldPx * posFX;
-	var foodY = fieldPx * posFY;
-	var score = 0;
 	var count = 0;
-	var lastKey = Math.floor((Math.random() * 4) +1);
-	fillHead();
-	fillFood();
 	
-	function fillHead(){
-		ctx.fillStyle = "Black";
-		ctx.fillRect(headX ,headY ,fieldPx -1 ,fieldPx -1);
-	}
+	var snake = {
+		length: 4,
+		score: 0,
+		x: fieldPx * Math.floor((Math.random() * 40) + 0),
+		y: fieldPx * Math.floor((Math.random() * 40) + 0),
+		px: fieldPx - 1
+	};
+	
+	function fillSnake(){
+		ctx.fillStyle = "Green";
+		ctx.fillRect(snake.x, snake.y, snake.px, snake.px);
+	}	
+	
+	function redirect(){
+		switch(lastKey){
+			case 1:
+				snake.y = snake.y +fieldPx;
+				break;
+			case 2:
+				snake.x = snake.x +fieldPx;
+				break;
+			case 3:
+				snake.y = snake.y -fieldPx;
+				break;
+			case 4:
+				snake.x = snake.x -fieldPx;
+				break;
+		}
+	}	
+	
+	var food = {
+		x: fieldPx * Math.floor((Math.random() * 40) + 0),
+		y: fieldPx * Math.floor((Math.random() * 40) + 0),
+		px: fieldPx - 1
+	};
 	
 	function fillFood(){
 		ctx.fillStyle = "Red";
-		ctx.fillRect(foodX, foodY, fieldPx -1, fieldPx -1);
-	}	
+		ctx.fillRect(food.x, food.y, food.px, food.px);
+	}
 	
 	function relocateFood(){
-		posFX = Math.floor((Math.random() * 39) + 0);
-		posFY = Math.floor((Math.random() * 39) + 0);
-		foodX = fieldPx * posFX;
-		foodY = fieldPx * posFY;	
+		food.x = fieldPx * Math.floor((Math.random() * 40) + 0);
+		food.y = fieldPx * Math.floor((Math.random() * 40) + 0);		
 		fillFood();
 	}
-		
-	function updateGameArea() {
-		//if (++count < 4){
-		//	return;
-		//}
-		//count = 0;
-		switch(lastKey){
-			case 1:
-				headY = headY +fieldPx;
-				break;
-			case 2:
-				headX = headX +fieldPx;
-				break;
-			case 3:
-				headY = headY -fieldPx;
-				break;
-			case 4:
-				headX = headX -fieldPx;
-				break;
+	function borderCrossing(){
+		if(snake.y < 0){
+			snake.y = 780;
+		}else if(snake.y > 780){
+			snake.y = 0;
+		}else if(snake.x < 0){
+			snake.x = 780;
+		}else if(snake.x > 780){
+			snake.x = 0;
 		}
-		switch(headY){
-			case -20:
-				headY = 780;
-				break;
-			case 800:
-				headY = 0;
-				break;
+	}		
+	
+	fillSnake();
+	fillFood();
+	
+	function loop() {
+		requestAnimationFrame(loop);
+		if(++count < 6){
+			return;
 		}
-		switch(headX){
-			case -20:
-				headX = 780;
-				break;
-			case 800:
-				headX = 0;
-				break;
-		}
-
-		if(headY == foodY && headX == foodX){
+		count = 0;
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		redirect();
+		borderCrossing();
+		if(snake.y == food.y && snake.x == food.x){
 			score = score + 200;
 			$("#score").text(score);
+			length = length + 1;
+			$("#length").text(length);
 			relocateFood();
 		}
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		fillHead();
+		fillSnake();
 		fillFood();
-		$("#score").text(score);		
-		requestAnimationFrame(updateGameArea);
+		$("#score").text(snake.score);
+		$("#length").text(snake.length);
 	}
-
+	
 	window.onkeydown = function(event) {
-		if(event.keyCode == 38) { // down
-			headY -= fieldPx;
-			lastKey = 3;
-		} else if(event.keyCode == 40) { // up
-			headY += fieldPx
-			lastKey = 1;
-		} else if(event.keyCode == 39) { // right 
-			headX += fieldPx
-			lastKey = 2;
-		} else if(event.keyCode == 37) { // left
-			headX -= fieldPx 
-			lastKey = 4;
+		switch(event.keyCode){
+			case 38://down
+				if(lastKey != 1){
+					lastKey = 3;
+				}
+				break;
+			case 40://up
+				if(lastKey != 3){
+					lastKey = 1;
+				}
+				break;
+			case 39://right
+				if(lastKey != 4){
+					lastKey = 2;
+				}
+				break;
+			case 37://left
+				if(lastKey != 2){
+					lastKey = 4;
+				}
+				break;
 		}
 	}
-
-requestAnimationFrame(updateGameArea);
+requestAnimationFrame(loop);
 	
 });
