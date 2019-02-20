@@ -5,6 +5,7 @@ $(document).ready(function(){
 	canvas.height = 800;
 	var fieldPx = 20;
 	var count = 0;
+	var lastKey = Math.floor((Math.random() * 4) +1);
 	
 	var snake = {
 		length: 4,
@@ -52,6 +53,7 @@ $(document).ready(function(){
 		food.y = fieldPx * Math.floor((Math.random() * 40) + 0);		
 		fillFood();
 	}
+	
 	function borderCrossing(){
 		if(snake.y < 0){
 			snake.y = 780;
@@ -77,8 +79,8 @@ $(document).ready(function(){
 		redirect();
 		borderCrossing();
 		if(snake.y == food.y && snake.x == food.x){
-			score = score + 200;
-			$("#score").text(score);
+			snake.score = snake.score + 200;
+			$("#score").text(snake.score);
 			length = length + 1;
 			$("#length").text(length);
 			relocateFood();
