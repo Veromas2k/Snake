@@ -1,23 +1,46 @@
 $(document).ready(function(){
+	//########
+	// Variablen
+	//########
 	var canvas = document.getElementById("canvas");
 	var ctx= canvas.getContext("2d");
-	canvas.width = 800;
-	canvas.height = 800;
-	var fieldPx = 20;
+	var fieldXY = 6;//VARIABLE FIELDS
+	var fieldPx = 800%(800 / fieldXY);
 	var count = 0;
 	var lastKey = Math.floor((Math.random() * 4) +1);
-	
 	var snake = {
-		length: 4,
+		speed : 60/3,//VARIABLE SPEED
+		color : "red",//VARIABLE SNAKE COLOR
+		length: 6,// VARIABLE START LENGTH
 		score: 0,
-		x: fieldPx * Math.floor((Math.random() * 40) + 0),
-		y: fieldPx * Math.floor((Math.random() * 40) + 0),
-		px: fieldPx - 1
+		body : [],
+		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+		y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+		px: fieldPx - fieldPx / 20
 	};
+	var food = {
+		color: "green",//VARIABLE FOOD COLOR
+		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+		y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+		px: fieldPx - fieldPx / 20
+	};
+//#####################################
+//functions
+//#####################################
+	function drawBodyCell(cell){
+		ctx.fillRect(cell.x,cell.y, snake.px, snake.px);
+	}
 	
 	function fillSnake(){
-		ctx.fillStyle = "Green";
+		ctx.fillStyle = snake.color;
 		ctx.fillRect(snake.x, snake.y, snake.px, snake.px);
+		snake.body.unshift({x: snake.x, y: snake.y});
+		
+		snake.body.forEach(drawBodyCell);
+
+		if (snake.body.length + 1 > snake.length){
+			snake.body.pop();
+		}
 	}	
 	
 	function redirect(){
@@ -37,41 +60,58 @@ $(document).ready(function(){
 		}
 	}	
 	
-	var food = {
-		x: fieldPx * Math.floor((Math.random() * 40) + 0),
-		y: fieldPx * Math.floor((Math.random() * 40) + 0),
-		px: fieldPx - 1
-	};
-	
 	function fillFood(){
-		ctx.fillStyle = "Red";
+		ctx.fillStyle = food.color;
 		ctx.fillRect(food.x, food.y, food.px, food.px);
 	}
 	
 	function relocateFood(){
-		food.x = fieldPx * Math.floor((Math.random() * 40) + 0);
-		food.y = fieldPx * Math.floor((Math.random() * 40) + 0);		
-		fillFood();
+		food.x = fieldPx * Math.floor((Math.random() * fieldXY) + 0);
+		food.y = fieldPx * Math.floor((Math.random() * fieldXY) + 0);		
+		occupied();
+		//fillFood();	
+	}
+	
+	function occupied(cell){
+		if(food.x == cell.x && cell.y == food.y){
+			relocateFood();
+		}else{
+			fillFood();
+		}
 	}
 	
 	function borderCrossing(){
 		if(snake.y < 0){
-			snake.y = 780;
-		}else if(snake.y > 780){
+			snake.y = 800 - fieldPx;
+		}else if(snake.y > 800 - fieldPx){
 			snake.y = 0;
 		}else if(snake.x < 0){
-			snake.x = 780;
-		}else if(snake.x > 780){
+			snake.x = 800 - fieldPx;
+		}else if(snake.x > 800 - fieldPx){
 			snake.x = 0;
 		}
-	}		
+	}
 	
+	function onCrash(cell){
+		if(snake.x == cell.x && cell.y == snake.y){
+			//alert("Game Over");
+		}
+	}
+
+//#####################################
+//on game start (run once)
+//#####################################	
+	canvas.width = 800;
+	canvas.height = 800;
 	fillSnake();
 	fillFood();
-	
-	function loop() {
-		requestAnimationFrame(loop);
-		if(++count < 6){
+	requestAnimationFrame(gameloop);
+//#####################################
+//game 
+//#####################################	
+	function gameloop() {
+		requestAnimationFrame(gameloop);
+		if(++count < snake.speed){
 			return;
 		}
 		count = 0;
@@ -81,16 +121,20 @@ $(document).ready(function(){
 		if(snake.y == food.y && snake.x == food.x){
 			snake.score = snake.score + 200;
 			$("#score").text(snake.score);
-			length = length + 1;
-			$("#length").text(length);
+			snake.length = snake.length + 1;
+			$("#length").text(snake.length);
 			relocateFood();
 		}
+		snake.body.forEach(onCrash);
 		fillSnake();
 		fillFood();
 		$("#score").text(snake.score);
 		$("#length").text(snake.length);
 	}
-	
+
+//#####################################
+//controls
+//#####################################
 	window.onkeydown = function(event) {
 		switch(event.keyCode){
 			case 38://down
@@ -115,6 +159,4 @@ $(document).ready(function(){
 				break;
 		}
 	}
-requestAnimationFrame(loop);
-	
 });
