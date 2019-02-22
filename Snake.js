@@ -4,14 +4,16 @@ $(document).ready(function(){
 	//########
 	var canvas = document.getElementById("canvas");
 	var ctx= canvas.getContext("2d");
-	var fieldXY = 6;//VARIABLE FIELDS
-	var fieldPx = 800%(800 / fieldXY);
+	var fieldXY = 8;//VARIABLE FIELDS
+	var fieldPx = 800 / fieldXY;
+	var fps = 6;//GAME SPEED IN FPS
 	var count = 0;
+	var animation = true;
 	var lastKey = Math.floor((Math.random() * 4) +1);
 	var snake = {
-		speed : 60/3,//VARIABLE SPEED
-		color : "red",//VARIABLE SNAKE COLOR
-		length: 6,// VARIABLE START LENGTH
+		speed : 60/fps,
+		color : "green",//VARIABLE SNAKE COLOR
+		length: 4,// VARIABLE START LENGTH
 		score: 0,
 		body : [],
 		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
@@ -19,7 +21,7 @@ $(document).ready(function(){
 		px: fieldPx - fieldPx / 20
 	};
 	var food = {
-		color: "green",//VARIABLE FOOD COLOR
+		color: "red",//VARIABLE FOOD COLOR
 		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 		y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 		px: fieldPx - fieldPx / 20
@@ -68,8 +70,7 @@ $(document).ready(function(){
 	function relocateFood(){
 		food.x = fieldPx * Math.floor((Math.random() * fieldXY) + 0);
 		food.y = fieldPx * Math.floor((Math.random() * fieldXY) + 0);		
-		occupied();
-		//fillFood();	
+		snake.body.forEach(occupied);
 	}
 	
 	function occupied(cell){
@@ -91,10 +92,12 @@ $(document).ready(function(){
 			snake.x = 0;
 		}
 	}
-	
+		
 	function onCrash(cell){
 		if(snake.x == cell.x && cell.y == snake.y){
 			//alert("Game Over");
+			$("#start").css("visibility", "visible");
+			//count = -9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
 		}
 	}
 
@@ -103,12 +106,17 @@ $(document).ready(function(){
 //#####################################	
 	canvas.width = 800;
 	canvas.height = 800;
-	fillSnake();
-	fillFood();
-	requestAnimationFrame(gameloop);
+	$("#start").click(function(){
+		$(this).css("visibility", "hidden");
+		fillSnake();
+		fillFood();
+		//fps = 0;
+		requestAnimationFrame(gameloop);
+	});
 //#####################################
 //game 
 //#####################################	
+	
 	function gameloop() {
 		requestAnimationFrame(gameloop);
 		if(++count < snake.speed){
@@ -135,7 +143,7 @@ $(document).ready(function(){
 //#####################################
 //controls
 //#####################################
-	window.onkeydown = function(event) {
+ 	window.onkeydown = function(event) {
 		switch(event.keyCode){
 			case 38://down
 				if(lastKey != 1){
@@ -158,5 +166,5 @@ $(document).ready(function(){
 				}
 				break;
 		}
-	}
+	} 
 });
