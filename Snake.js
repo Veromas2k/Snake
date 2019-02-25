@@ -4,31 +4,56 @@ $(document).ready(function(){
 	//########
 	var canvas = document.getElementById("canvas");
 	var ctx= canvas.getContext("2d");
-	var fieldXY = 8;//VARIABLE FIELDS
-	var fieldPx = 800 / fieldXY;
-	var fps = 6;//GAME SPEED IN FPS
-	var count = 0;
-	var animation = true;
-	var lastKey = Math.floor((Math.random() * 4) +1);
-	var snake = {
-		speed : 60/fps,
-		color : "green",//VARIABLE SNAKE COLOR
-		length: 4,// VARIABLE START LENGTH
-		score: 0,
-		body : [],
-		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
-		y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
-		px: fieldPx - fieldPx / 20
-	};
-	var food = {
-		color: "red",//VARIABLE FOOD COLOR
-		x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
-		y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
-		px: fieldPx - fieldPx / 20
-	};
+	var fieldXY;
+	var fieldPx;
+	var count;
+	var gameOn;
+	var borders;
+	var lastKey;
+	var snake;
+	var food;
+	function start(){
+		fieldXY = $("#myRange").val();//VARIABLE FIELDS
+		fieldPx = 800 / fieldXY;
+		count = 0;
+		gameOn = false;
+		borders = false;//BORDERS ON OR OFF
+		lastKey = Math.floor((Math.random() * 4) +1);
+		snake = {
+			speed : 60/6,//VARIABLE GAME SPEED
+			color : "green",//VARIABLE SNAKE COLOR
+			length: 4,// VARIABLE START LENGTH
+			score: 0,
+			body : [],
+			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+			y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+			px: fieldPx - fieldPx / 20
+		};
+		food = {
+			color: "red",//VARIABLE FOOD COLOR
+			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+			y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
+			px: fieldPx - fieldPx / 20
+		};
+	}
+	start();
+//#####################################
+//UI
+//#####################################	
+var slider = document.getElementById("myRange");
+var output = document.getElementById("gridVal");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+} 
+	
+
 //#####################################
 //functions
 //#####################################
+	
 	function drawBodyCell(cell){
 		ctx.fillRect(cell.x,cell.y, snake.px, snake.px);
 	}
@@ -82,36 +107,52 @@ $(document).ready(function(){
 	}
 	
 	function borderCrossing(){
-		if(snake.y < 0){
-			snake.y = 800 - fieldPx;
-		}else if(snake.y > 800 - fieldPx){
-			snake.y = 0;
-		}else if(snake.x < 0){
-			snake.x = 800 - fieldPx;
-		}else if(snake.x > 800 - fieldPx){
-			snake.x = 0;
+		if( borders == false){
+			if(snake.y < 0){
+				snake.y = 800 - fieldPx;
+			}else if(snake.y > 800 - fieldPx){
+				snake.y = 0;
+			}else if(snake.x < 0){
+				snake.x = 800 - fieldPx;
+			}else if(snake.x > 800 - fieldPx){
+				snake.x = 0;
+			}
+		}
+		else{
+			if(snake.y < 0){
+				gameStop();
+			}else if(snake.y > 800 - fieldPx){
+				gameStop();
+			}else if(snake.x < 0){
+				gameStop();
+			}else if(snake.x > 800 - fieldPx){
+				gameStop();
+			}	
 		}
 	}
 		
 	function onCrash(cell){
 		if(snake.x == cell.x && cell.y == snake.y){
-			//alert("Game Over");
-			$("#start").css("visibility", "visible");
-			//count = -9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;
+			gameStop();
 		}
+	}
+	
+	function gameStop(){
+			alert("Game Over");
+			$("#start").css("visibility", "visible");
+			gameOn = false;	
 	}
 
 //#####################################
-//on game start (run once)
+//on game start button press
 //#####################################	
 	canvas.width = 800;
 	canvas.height = 800;
+	requestAnimationFrame(gameloop);
 	$("#start").click(function(){
 		$(this).css("visibility", "hidden");
-		fillSnake();
-		fillFood();
-		//fps = 0;
-		requestAnimationFrame(gameloop);
+		start();
+		gameOn = true;
 	});
 //#####################################
 //game 
@@ -119,6 +160,9 @@ $(document).ready(function(){
 	
 	function gameloop() {
 		requestAnimationFrame(gameloop);
+		if(gameOn == false){
+			return;
+		}
 		if(++count < snake.speed){
 			return;
 		}

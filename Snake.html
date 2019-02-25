@@ -3,9 +3,10 @@
 <head>
 	<title>Snek by Veromas2k</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	<script src="Snake.js"></script>
 	<link rel="stylesheet" type="text/css" href="Snake.css" />
-
+	
 </head>
 
 <body>
@@ -13,10 +14,17 @@
 	<div class="game">
 		<div class="menu">
 			<div  id="scoreT">Score:
-			<span id="score">0</span></div>
+				<span id="score">0</span>
+			</div>
 			<div id="lengthT">Length:
-			<span id="length">0</span></div>
-		<div  id="start">Start game</div>
+				<span id="length">0</span>
+			</div>
+				<br>
+				<div class="slidecontainer">
+					<input type="range" min="8" max="40" value="16" step="8" class="slider" id="myRange"><br>
+					<div id="gridVal"></div>
+				</div>
+			<div  id="start">Start game</div>
 		</div>
 		<canvas id="canvas"></canvas>
 	</div>
