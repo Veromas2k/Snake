@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Snek by Veromas2k</title>
@@ -16,13 +16,34 @@
 			<div  id="scoreT">Score:
 				<span id="score">0</span>
 			</div>
+			<br>
 			<div id="lengthT">Length:
 				<span id="length">0</span>
 			</div>
 				<br>
 				<div class="slidecontainer">
-					<input type="range" min="8" max="40" value="16" step="8" class="slider" id="myRange"><br>
-					<div id="gridVal"></div>
+					<div style="display: inline">Grid Size</div>
+					<div id="gridVal" style="float: right;display: inline; color: blue"></div>
+					<input type="range" min="1" max="5" value="2" step="1" class="slider" id="gridSlider">
+					<br>
+					<div style="display: inline">Snake Length</div>
+					<div id="lengthVal" style="float: right;display: inline; color: blue"></div>
+					<input type="range" min="1" max="128" value="4" step="1" class="slider" id="lengthSlider">
+					<br>
+					<div style="display: inline">Snake Speed</div>
+					<div id="speedVal" style="float: right;display: inline; color: blue"></div>
+					<input type="range" min="1" max="60" value="10" step="1" class="slider" id="speedSlider">	
+					<br>
+					<div style="display: inline">Borders</div>
+					<div id="borderVal" style="float: right;display: inline; color: blue"></div>
+					<input type="range" min="1" max="2" value="1" step="1" class="slider" id="borderSlider">	
+					<br>
+					<div style="display: inline">Snake Color</div>
+					<input type="color" id="snakeColor" style="float: right; display: inline;" value="#009900">
+					<br>
+					<br>
+					<div style="display: inline">Food Color</div>
+					<input type="color" id="foodColor" style="float: right; display: inline;" value="#f00000">
 				</div>
 			<div  id="start">Start game</div>
 		</div>

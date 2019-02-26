@@ -8,21 +8,22 @@ $(document).ready(function(){
 	var fieldPx;
 	var count;
 	var gameOn;
-	var borders;
+	var borders = false;
+	var borderCheck;
 	var lastKey;
 	var snake;
 	var food;
 	function start(){
-		fieldXY = $("#myRange").val();//VARIABLE FIELDS
+		fieldXY = $("#gridVal").text();//VARIABLE FIELDS
 		fieldPx = 800 / fieldXY;
 		count = 0;
 		gameOn = false;
-		borders = false;//BORDERS ON OR OFF
+		borders = borderCheck;//BORDERS ON OR OFF
 		lastKey = Math.floor((Math.random() * 4) +1);
 		snake = {
-			speed : 60/6,//VARIABLE GAME SPEED
-			color : "green",//VARIABLE SNAKE COLOR
-			length: 4,// VARIABLE START LENGTH
+			speed : 60 / Number($("#speedSlider").val()),//VARIABLE GAME SPEED
+			color : $("#snakeColor").val(),//VARIABLE SNAKE COLOR
+			length: Number($("#lengthSlider").val()),// VARIABLE START LENGTH
 			score: 0,
 			body : [],
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
@@ -30,7 +31,7 @@ $(document).ready(function(){
 			px: fieldPx - fieldPx / 20
 		};
 		food = {
-			color: "red",//VARIABLE FOOD COLOR
+			color: $("#foodColor").val(),//VARIABLE FOOD COLOR
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			px: fieldPx - fieldPx / 20
@@ -40,16 +41,67 @@ $(document).ready(function(){
 //#####################################
 //UI
 //#####################################	
-var slider = document.getElementById("myRange");
-var output = document.getElementById("gridVal");
-output.innerHTML = slider.value; // Display the default slider value
+	var gridSlider = document.getElementById("gridSlider");
+	var gridOutput = document.getElementById("gridVal");
+	gridOutput.innerHTML = gridOutput.value;
 
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-  output.innerHTML = this.value;
-} 
+	gridSlider.oninput = function() {
+		if(gridSlider.value == 1){
+			gridOutput.innerHTML = 8;
+			$("#gridVal").text() = 8;
+		}
+		if(gridSlider.value == 2){
+			gridOutput.innerHTML = 16;
+			$("#gridVal").text() = 16;
+		}
+		if(gridSlider.value == 3){
+			gridOutput.innerHTML = 32;
+			$("#gridVal").text() = 32;
+		}
+		if(gridSlider.value == 4){
+			gridOutput.innerHTML = 64;
+			$("#gridVal").text() = 64;
+		}
+		if(gridSlider.value == 5){
+			gridOutput.innerHTML = 128;
+			$("#gridVal").text() = 128;
+		}
+	}
 	
+	var lengthSlider = document.getElementById("lengthSlider");
+	var lengthOutput = document.getElementById("lengthVal");
+	lengthOutput.innerHTML = lengthSlider.value; 
 
+	lengthSlider.oninput = function() {
+		lengthOutput.innerHTML = this.value;
+	} 
+	
+	var speedSlider = document.getElementById("speedSlider");
+	var speedOutput = document.getElementById("speedVal");
+	speedOutput.innerHTML = speedSlider.value; 
+
+	speedSlider.oninput = function() {
+		speedOutput.innerHTML = this.value;
+	} 
+	
+	var borderSlider = document.getElementById("borderSlider");
+	var borderOutput = document.getElementById("borderVal");
+	borderOutput.innerHTML = borderOutput.text;
+	
+	borderSlider.oninput = function() {
+		if(borderSlider.value == 1){
+			borderOutput.innerHTML = "disabled";
+			document.getElementById("borderVal").style.color = "red";
+			document.getElementById("canvas").style.border = "2px solid white";
+			borderCheck = false;
+		}
+		if(borderSlider.value == 2){
+			borderOutput.innerHTML = "enabled";
+			document.getElementById("borderVal").style.color = "green";
+			document.getElementById("canvas").style.border = "2px solid red";
+			borderCheck  = true;
+		}
+	} 
 //#####################################
 //functions
 //#####################################
@@ -140,6 +192,10 @@ slider.oninput = function() {
 	function gameStop(){
 			alert("Game Over");
 			$("#start").css("visibility", "visible");
+			$("#gridSlider").css("visibility", "visible");
+			$("#lengthSlider").css("visibility", "visible");
+			$("#speedSlider").css("visibility", "visible");
+			$("#borderSlider").css("visibility", "visible");
 			gameOn = false;	
 	}
 
@@ -150,9 +206,21 @@ slider.oninput = function() {
 	canvas.height = 800;
 	requestAnimationFrame(gameloop);
 	$("#start").click(function(){
-		$(this).css("visibility", "hidden");
-		start();
-		gameOn = true;
+		if($("#gridVal").text() == "undefined"){
+			alert("undefined grid size");
+		}
+		else if($("#borderVal").text() == "undefined"){
+			alert("undefined border settings");
+		}
+		else{
+			$("#start").css("visibility", "hidden");
+			$("#gridSlider").css("visibility", "hidden");
+			$("#lengthSlider").css("visibility", "hidden");
+			$("#speedSlider").css("visibility", "hidden");
+			$("#borderSlider").css("visibility", "hidden");
+			start();
+			gameOn = true;
+		}
 	});
 //#####################################
 //game 

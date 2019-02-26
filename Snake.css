@@ -1,33 +1,30 @@
 .slidecontainer {
-  width: 100%; /* Width of the outside container */
+  width: 100%; 
 }
 
-/* The slider itself */
 .slider {
-  -webkit-appearance: none;  /* Override default CSS styles */
+  -webkit-appearance: none;  
   appearance: none;
-  width: 100%; /* Full-width */
-  height: 25px; /* Specified height */
-  background: black; /* Grey background */
-  outline: none; /* Remove outline */
-  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  width: 100%; 
+  height: 25px; 
+  background: black; 
+  outline: none; 
+  opacity: 0.7; 
+  -webkit-transition: .2s; 
   transition: opacity .2s;
 }
 
-/* Mouse-over effects */
 .slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
+  opacity: 1;
 }
 
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none; 
   appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: white; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  width: 25px;
+  height: 25px;
+  background: white; 
+  cursor: pointer; 
 }
 
 html {
@@ -54,12 +51,13 @@ h1 {
 }
 
 .menu {
-	font-size: 20px;
+	font-size: 28px;
 	display: inline-block;
 	margin: 20px 10px 20px 20px;
-	width: 200px;
+	width: 235px;
 	height: 800px;
 }
+
 
 span {
 	display: inline-block;
