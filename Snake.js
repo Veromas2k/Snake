@@ -1,4 +1,4 @@
-$(document).ready(function(){
+document.addEventListener("DOMContentLoaded", function(event) { 
 	//########
 	// Variablen
 	//########
@@ -11,19 +11,21 @@ $(document).ready(function(){
 	var borders = false;
 	var borderCheck;
 	var lastKey;
+	var gridArray = [8,16,32,64,128];
+	var gridPos;
 	var snake;
 	var food;
 	function start(){
-		fieldXY = $("#gridVal").text();//VARIABLE FIELDS
+		fieldXY = Number(document.getElementById("gridVal").text);//VARIABLE FIELDS
 		fieldPx = 800 / fieldXY;
 		count = 0;
 		gameOn = false;
 		borders = borderCheck;//BORDERS ON OR OFF
 		lastKey = Math.floor((Math.random() * 4) +1);
 		snake = {
-			speed : 60 / Number($("#speedSlider").val()),//VARIABLE GAME SPEED
-			color : $("#snakeColor").val(),//VARIABLE SNAKE COLOR
-			length: Number($("#lengthSlider").val()),// VARIABLE START LENGTH
+			speed : 60 / Number(document.getElementById("speedSlider").value),//VARIABLE GAME SPEED
+			color : document.getElementById("snakeColor").value,//VARIABLE SNAKE COLOR
+			length: Number(document.getElementById("lengthSlider").value),// VARIABLE START LENGTH
 			score: 0,
 			body : [],
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
@@ -31,7 +33,7 @@ $(document).ready(function(){
 			px: fieldPx - fieldPx / 20
 		};
 		food = {
-			color: $("#foodColor").val(),//VARIABLE FOOD COLOR
+			color: document.getElementById("foodColor").value,//VARIABLE FOOD COLOR
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			px: fieldPx - fieldPx / 20
@@ -44,28 +46,10 @@ $(document).ready(function(){
 	var gridSlider = document.getElementById("gridSlider");
 	var gridOutput = document.getElementById("gridVal");
 	gridOutput.innerHTML = gridOutput.value;
-
-	gridSlider.oninput = function() {
-		if(gridSlider.value == 1){
-			gridOutput.innerHTML = 8;
-			$("#gridVal").text() = 8;
-		}
-		if(gridSlider.value == 2){
-			gridOutput.innerHTML = 16;
-			$("#gridVal").text() = 16;
-		}
-		if(gridSlider.value == 3){
-			gridOutput.innerHTML = 32;
-			$("#gridVal").text() = 32;
-		}
-		if(gridSlider.value == 4){
-			gridOutput.innerHTML = 64;
-			$("#gridVal").text() = 64;
-		}
-		if(gridSlider.value == 5){
-			gridOutput.innerHTML = 128;
-			$("#gridVal").text() = 128;
-		}
+	gridSlider.oninput = function(){
+		gridPos = Number(gridSlider.value) - 1;
+		gridOutput.innerHTML =  (gridArray[gridPos]);
+		document.getElementById("gridVal").text = (gridArray[gridPos]);
 	}
 	
 	var lengthSlider = document.getElementById("lengthSlider");
@@ -86,17 +70,19 @@ $(document).ready(function(){
 	
 	var borderSlider = document.getElementById("borderSlider");
 	var borderOutput = document.getElementById("borderVal");
-	borderOutput.innerHTML = borderOutput.text;
+	borderOutput.innerHTML = document.getElementById("borderVal").text;
 	
 	borderSlider.oninput = function() {
 		if(borderSlider.value == 1){
 			borderOutput.innerHTML = "disabled";
+			document.getElementById("borderVal").text = "disabled";
 			document.getElementById("borderVal").style.color = "red";
 			document.getElementById("canvas").style.border = "2px solid white";
 			borderCheck = false;
 		}
 		if(borderSlider.value == 2){
 			borderOutput.innerHTML = "enabled";
+			document.getElementById("borderVal").text = "enabled";
 			document.getElementById("borderVal").style.color = "green";
 			document.getElementById("canvas").style.border = "2px solid red";
 			borderCheck  = true;
@@ -191,11 +177,11 @@ $(document).ready(function(){
 	
 	function gameStop(){
 			alert("Game Over");
-			$("#start").css("visibility", "visible");
-			$("#gridSlider").css("visibility", "visible");
-			$("#lengthSlider").css("visibility", "visible");
-			$("#speedSlider").css("visibility", "visible");
-			$("#borderSlider").css("visibility", "visible");
+			document.getElementById("start").style.visibility=  "visible";
+			document.getElementById("gridSlider").style.visibility=  "visible";
+			document.getElementById("lengthSlider").style.visibility=  "visible";
+			document.getElementById("speedSlider").style.visibility=  "visible";
+			document.getElementById("borderSlider").style.visibility=  "visible";
 			gameOn = false;	
 	}
 
@@ -205,23 +191,23 @@ $(document).ready(function(){
 	canvas.width = 800;
 	canvas.height = 800;
 	requestAnimationFrame(gameloop);
-	$("#start").click(function(){
-		if($("#gridVal").text() == "undefined"){
+	document.getElementById("start").onclick = function(){
+		if(document.getElementById("gridVal").text == undefined){
 			alert("undefined grid size");
 		}
-		else if($("#borderVal").text() == "undefined"){
+		else if(document.getElementById("borderVal").text == undefined){
 			alert("undefined border settings");
 		}
 		else{
-			$("#start").css("visibility", "hidden");
-			$("#gridSlider").css("visibility", "hidden");
-			$("#lengthSlider").css("visibility", "hidden");
-			$("#speedSlider").css("visibility", "hidden");
-			$("#borderSlider").css("visibility", "hidden");
+			document.getElementById("start").style.visibility=  "hidden";
+			document.getElementById("gridSlider").style.visibility=  "hidden";
+			document.getElementById("lengthSlider").style.visibility=  "hidden";
+			document.getElementById("speedSlider").style.visibility=  "hidden";
+			document.getElementById("borderSlider").style.visibility=  "hidden";
 			start();
 			gameOn = true;
 		}
-	});
+	};
 //#####################################
 //game 
 //#####################################	
@@ -240,7 +226,8 @@ $(document).ready(function(){
 		borderCrossing();
 		if(snake.y == food.y && snake.x == food.x){
 			snake.score = snake.score + 200;
-			$("#score").text(snake.score);
+
+			//$("#score").text(snake.score);
 			snake.length = snake.length + 1;
 			$("#length").text(snake.length);
 			relocateFood();
@@ -248,8 +235,8 @@ $(document).ready(function(){
 		snake.body.forEach(onCrash);
 		fillSnake();
 		fillFood();
-		$("#score").text(snake.score);
-		$("#length").text(snake.length);
+		//document.getElementById("score").text(snake.score);
+		//document.getElementById("length").text(snake.length);
 	}
 
 //#####################################

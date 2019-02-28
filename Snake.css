@@ -58,12 +58,6 @@ h1 {
 	height: 800px;
 }
 
-
-span {
-	display: inline-block;
-	float: right;
-}
-
 #length {
 	text-align: right;
 	color: red;
