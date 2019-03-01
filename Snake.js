@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var fieldPx;
 	var count;
 	var gameOn;
-	var borders = false;
+	var borders;
 	var borderCheck;
 	var lastKey;
 	var gridArray = [8,16,32,64,128];
@@ -22,18 +22,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var lengthOutput = document.getElementById("lengthVal");
 	var speedSlider = document.getElementById("speedSlider");
 	var speedOutput = document.getElementById("speedVal");
-	var borderSlider = document.getElementById("borderSlider");
-	var borderOutput = document.getElementById("borderVal");
+	var borderButton = document.getElementById("borderButton"); 
 	var foodColor = document.getElementById("foodColor");
 	var length = document.getElementById("length");
 	var score = document.getElementById("score");
 	var gamestart = document.getElementById("start");
-	
+//	alert(borderButton.getAttribute(""));
 	gridOutput.innerHTML = gridOutput.value;
 	lengthOutput.innerHTML = lengthSlider.value; 
 	speedOutput.innerHTML = speedSlider.value; 
-	borderOutput.innerHTML = borderOutput.text;	
-	
+	borderValue = borderButton.getAttribute("value");
+
 	function start(){
 		fieldXY = Number(gridVal.text);//VARIABLE FIELDS
 		fieldPx = 800 / fieldXY;
@@ -77,18 +76,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		speedOutput.innerHTML = this.value;
 	} 
 	
-	borderSlider.oninput = function() {
-		if(borderSlider.value == 1){
-			borderOutput.innerHTML = "disabled";
-			borderVal.text = "disabled";
-			borderVal.style.color = "red";
+	borderButton.onclick = function() {
+		if(borderButton.value == 1){
+			borderButton.value = 0;
+			borderButton.innerHTML.text = "disabled";
+			borderButton.style.color = "red";
 			canvas.style.border = "2px solid white";
 			borderCheck = false;
 		}
-		if(borderSlider.value == 2){
-			borderOutput.innerHTML = "enabled";
-			borderVal.text = "enabled";
-			borderVal.style.color = "green";
+		if(borderButton.value==0){
+			borderButton.value = 1;
+			borderButton.innerHTML = "enabled";
+			borderButton.style.color = "green";
 			canvas.style.border = "2px solid red";
 			borderCheck  = true;
 		}
@@ -186,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			gridSlider.style.visibility=  "visible";
 			lengthSlider.style.visibility=  "visible";
 			speedSlider.style.visibility=  "visible";
-			borderSlider.style.visibility=  "visible";
 			gameOn = false;	
 	}
 
@@ -200,15 +198,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		if(gridVal.text == undefined){
 			alert("undefined grid size");
 		}
-		else if(borderVal.text == undefined){
-			alert("undefined border settings");
-		}
 		else{
 			gamestart.style.visibility=  "hidden";
 			gridSlider.style.visibility=  "hidden";
 			lengthSlider.style.visibility=  "hidden";
 			speedSlider.style.visibility=  "hidden";
-			borderSlider.style.visibility=  "hidden";
 			start();
 			gameOn = true;
 		}
