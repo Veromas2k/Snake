@@ -78,6 +78,17 @@ h1 {
 	cursor: pointer;	
 }
 
+.colorpicker{
+	float: right;
+	display: inline;
+}
+	
+.info{
+	float: right;
+	display: inline;
+	color: blue;
+}
+
 #canvas {
 	background-color: Black;
 	display: inline-block;
@@ -93,15 +104,4 @@ h1 {
 	height: 10px;
 	border: 1px White;
 	background-color: red;
-}
-.ui-widget-content {
-	margin: 0x;
-}
-
-a:hover {
-	color: pink;
-}
-
-footer {
- text-align: center;
 }

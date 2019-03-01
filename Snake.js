@@ -15,17 +15,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var gridPos;
 	var snake;
 	var food;
+	
+	var gridSlider = document.getElementById("gridSlider");
+	var gridOutput = document.getElementById("gridVal");
+	var lengthSlider = document.getElementById("lengthSlider");
+	var lengthOutput = document.getElementById("lengthVal");
+	var speedSlider = document.getElementById("speedSlider");
+	var speedOutput = document.getElementById("speedVal");
+	var borderSlider = document.getElementById("borderSlider");
+	var borderOutput = document.getElementById("borderVal");
+	var foodColor = document.getElementById("foodColor");
+	var length = document.getElementById("length");
+	var score = document.getElementById("score");
+	var gamestart = document.getElementById("start");
+	
+	gridOutput.innerHTML = gridOutput.value;
+	lengthOutput.innerHTML = lengthSlider.value; 
+	speedOutput.innerHTML = speedSlider.value; 
+	borderOutput.innerHTML = borderOutput.text;	
+	
 	function start(){
-		fieldXY = Number(document.getElementById("gridVal").text);//VARIABLE FIELDS
+		fieldXY = Number(gridVal.text);//VARIABLE FIELDS
 		fieldPx = 800 / fieldXY;
 		count = 0;
 		gameOn = false;
 		borders = borderCheck;//BORDERS ON OR OFF
 		lastKey = Math.floor((Math.random() * 4) +1);
 		snake = {
-			speed : 60 / Number(document.getElementById("speedSlider").value),//VARIABLE GAME SPEED
-			color : document.getElementById("snakeColor").value,//VARIABLE SNAKE COLOR
-			length: Number(document.getElementById("lengthSlider").value),// VARIABLE START LENGTH
+			speed : 60 / Number(speedSlider.value),//VARIABLE GAME SPEED
+			color : snakeColor.value,//VARIABLE SNAKE COLOR
+			length: Number(lengthSlider.value),// VARIABLE START LENGTH
 			score: 0,
 			body : [],
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
@@ -33,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 			px: fieldPx - fieldPx / 20
 		};
 		food = {
-			color: document.getElementById("foodColor").value,//VARIABLE FOOD COLOR
+			color: foodColor.value,//VARIABLE FOOD COLOR
 			x: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			y: fieldPx * Math.floor((Math.random() * fieldXY) + 0),
 			px: fieldPx - fieldPx / 20
@@ -43,48 +62,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
 //#####################################
 //UI
 //#####################################	
-	var gridSlider = document.getElementById("gridSlider");
-	var gridOutput = document.getElementById("gridVal");
-	gridOutput.innerHTML = gridOutput.value;
+
 	gridSlider.oninput = function(){
 		gridPos = Number(gridSlider.value) - 1;
 		gridOutput.innerHTML =  (gridArray[gridPos]);
-		document.getElementById("gridVal").text = (gridArray[gridPos]);
+		gridVal.text = (gridArray[gridPos]);
 	}
 	
-	var lengthSlider = document.getElementById("lengthSlider");
-	var lengthOutput = document.getElementById("lengthVal");
-	lengthOutput.innerHTML = lengthSlider.value; 
-
 	lengthSlider.oninput = function() {
-		lengthOutput.innerHTML = this.value;
+		lengthOutput.innerHTML = lengthSlider.value;
 	} 
-	
-	var speedSlider = document.getElementById("speedSlider");
-	var speedOutput = document.getElementById("speedVal");
-	speedOutput.innerHTML = speedSlider.value; 
 
 	speedSlider.oninput = function() {
 		speedOutput.innerHTML = this.value;
 	} 
 	
-	var borderSlider = document.getElementById("borderSlider");
-	var borderOutput = document.getElementById("borderVal");
-	borderOutput.innerHTML = document.getElementById("borderVal").text;
-	
 	borderSlider.oninput = function() {
 		if(borderSlider.value == 1){
 			borderOutput.innerHTML = "disabled";
-			document.getElementById("borderVal").text = "disabled";
-			document.getElementById("borderVal").style.color = "red";
-			document.getElementById("canvas").style.border = "2px solid white";
+			borderVal.text = "disabled";
+			borderVal.style.color = "red";
+			canvas.style.border = "2px solid white";
 			borderCheck = false;
 		}
 		if(borderSlider.value == 2){
 			borderOutput.innerHTML = "enabled";
-			document.getElementById("borderVal").text = "enabled";
-			document.getElementById("borderVal").style.color = "green";
-			document.getElementById("canvas").style.border = "2px solid red";
+			borderVal.text = "enabled";
+			borderVal.style.color = "green";
+			canvas.style.border = "2px solid red";
 			borderCheck  = true;
 		}
 	} 
@@ -177,11 +182,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	
 	function gameStop(){
 			alert("Game Over");
-			document.getElementById("start").style.visibility=  "visible";
-			document.getElementById("gridSlider").style.visibility=  "visible";
-			document.getElementById("lengthSlider").style.visibility=  "visible";
-			document.getElementById("speedSlider").style.visibility=  "visible";
-			document.getElementById("borderSlider").style.visibility=  "visible";
+			gamestart.style.visibility=  "visible";
+			gridSlider.style.visibility=  "visible";
+			lengthSlider.style.visibility=  "visible";
+			speedSlider.style.visibility=  "visible";
+			borderSlider.style.visibility=  "visible";
 			gameOn = false;	
 	}
 
@@ -191,19 +196,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	canvas.width = 800;
 	canvas.height = 800;
 	requestAnimationFrame(gameloop);
-	document.getElementById("start").onclick = function(){
-		if(document.getElementById("gridVal").text == undefined){
+	gamestart.onclick = function(){
+		if(gridVal.text == undefined){
 			alert("undefined grid size");
 		}
-		else if(document.getElementById("borderVal").text == undefined){
+		else if(borderVal.text == undefined){
 			alert("undefined border settings");
 		}
 		else{
-			document.getElementById("start").style.visibility=  "hidden";
-			document.getElementById("gridSlider").style.visibility=  "hidden";
-			document.getElementById("lengthSlider").style.visibility=  "hidden";
-			document.getElementById("speedSlider").style.visibility=  "hidden";
-			document.getElementById("borderSlider").style.visibility=  "hidden";
+			gamestart.style.visibility=  "hidden";
+			gridSlider.style.visibility=  "hidden";
+			lengthSlider.style.visibility=  "hidden";
+			speedSlider.style.visibility=  "hidden";
+			borderSlider.style.visibility=  "hidden";
 			start();
 			gameOn = true;
 		}
@@ -226,17 +231,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		borderCrossing();
 		if(snake.y == food.y && snake.x == food.x){
 			snake.score = snake.score + 200;
-
-			//$("#score").text(snake.score);
 			snake.length = snake.length + 1;
-			$("#length").text(snake.length);
 			relocateFood();
 		}
 		snake.body.forEach(onCrash);
 		fillSnake();
 		fillFood();
-		//document.getElementById("score").text(snake.score);
-		//document.getElementById("length").text(snake.length);
+		score.innerHTML = snake.score;
+		length.innerHTML = snake.length;
 	}
 
 //#####################################
