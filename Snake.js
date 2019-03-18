@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var count;
 	var gameOn;
 	var borders;
-	var borderCheck;
+	var borderCheck= false;
 	var lastKey;
 	var gridArray = [8,16,32,64,128];
 	var gridPos;
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var lengthOutput = document.getElementById("lengthVal");
 	var speedSlider = document.getElementById("speedSlider");
 	var speedOutput = document.getElementById("speedVal");
-	var borderButton = document.getElementById("borderButton"); 
+	var onOffVal = document.getElementById("onOffVal");
 	var foodColor = document.getElementById("foodColor");
 	var length = document.getElementById("length");
 	var score = document.getElementById("score");
@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	gridOutput.innerHTML = gridOutput.value;
 	lengthOutput.innerHTML = lengthSlider.value; 
 	speedOutput.innerHTML = speedSlider.value; 
-	borderValue = borderButton.getAttribute("value");
-
+	
 	function start(){
 		fieldXY = Number(gridVal.text);//VARIABLE FIELDS
 		fieldPx = 800 / fieldXY;
@@ -76,19 +75,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		speedOutput.innerHTML = this.value;
 	} 
 	
-	borderButton.onclick = function() {
-		if(borderButton.value == 1){
-			borderButton.value = 0;
-			borderButton.innerHTML.text = "disabled";
-			borderButton.style.color = "red";
-			canvas.style.border = "2px solid white";
+	onOffVal.onclick = function() {
+		if(onOffVal.checked ==false){
 			borderCheck = false;
 		}
-		if(borderButton.value==0){
-			borderButton.value = 1;
-			borderButton.innerHTML = "enabled";
-			borderButton.style.color = "green";
-			canvas.style.border = "2px solid red";
+		if(onOffVal.checked==true){
 			borderCheck  = true;
 		}
 	} 
@@ -262,4 +253,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 				break;
 		}
 	} 
+	var arrow_keys_handler = function(e) {
+		switch(e.keyCode){
+			case 37: case 39: case 38:  case 40: // Arrow keys
+			case 32: e.preventDefault(); break; // Space
+			default: break; // do not block other keys
+		}
+	};
+	window.addEventListener("keydown", arrow_keys_handler, false);
 });
