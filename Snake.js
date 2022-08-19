@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 		borders = borderCheck;//BORDERS ON OR OFF
 		lastKey = Math.floor((Math.random() * 4) +1);
 		snake = {
+			currentDirection : lastKey,
 			speed : 60 / Number(speedSlider.value),//VARIABLE GAME SPEED
 			color : snakeColor.value,//VARIABLE SNAKE COLOR
 			length: Number(lengthSlider.value),// VARIABLE START LENGTH
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	}	
 	
 	function redirect(){
+		snake.currentDirection = lastKey; 
 		switch(lastKey){
 			case 1:
 				snake.y = snake.y +fieldPx;
@@ -232,22 +234,22 @@ document.addEventListener("DOMContentLoaded", function(event) {
  	window.onkeydown = function(event) {
 		switch(event.keyCode){
 			case 38://down
-				if(lastKey != 1){
+				if(snake.currentDirection != 1){
 					lastKey = 3;
 				}
 				break;
 			case 40://up
-				if(lastKey != 3){
+				if(snake.currentDirection != 3){
 					lastKey = 1;
 				}
 				break;
 			case 39://right
-				if(lastKey != 4){
+				if(snake.currentDirection != 4){
 					lastKey = 2;
 				}
 				break;
 			case 37://left
-				if(lastKey != 2){
+				if(snake.currentDirection != 2){
 					lastKey = 4;
 				}
 				break;
