@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) { 
 	//########
-	// Variablen
+	// variables
 	//########
+	
 	var canvas = document.getElementById("canvas");
 	var ctx= canvas.getContext("2d");
 	var fieldXY;
@@ -15,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var gridPos;
 	var snake;
 	var food;
-	
 	var gridSlider = document.getElementById("gridSlider");
 	var gridOutput = document.getElementById("gridVal");
 	var lengthSlider = document.getElementById("lengthSlider");
@@ -27,8 +27,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	var length = document.getElementById("length");
 	var score = document.getElementById("score");
 	var gamestart = document.getElementById("start");
-//	alert(borderButton.getAttribute(""));
-	gridOutput.innerHTML = gridOutput.value;
+	
+//#####################################
+//INIT
+//#####################################	
+
+	gridPos = Number(gridSlider.value) - 1;
+	gridOutput.innerHTML =  (gridArray[gridPos]);
+	gridVal.text = (gridArray[gridPos]);
 	lengthOutput.innerHTML = lengthSlider.value; 
 	speedOutput.innerHTML = speedSlider.value; 
 	
@@ -188,17 +194,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	canvas.height = 800;
 	requestAnimationFrame(gameloop);
 	gamestart.onclick = function(){
-		if(gridVal.text == undefined){
-			alert("undefined grid size");
-		}
-		else{
-			gamestart.style.visibility=  "hidden";
-			gridSlider.style.visibility=  "hidden";
-			lengthSlider.style.visibility=  "hidden";
-			speedSlider.style.visibility=  "hidden";
-			start();
-			gameOn = true;
-		}
+		gamestart.style.visibility=  "hidden";
+		gridSlider.style.visibility=  "hidden";
+		lengthSlider.style.visibility=  "hidden";
+		speedSlider.style.visibility=  "hidden";
+		start();
+		gameOn = true;
 	};
 //#####################################
 //game 
